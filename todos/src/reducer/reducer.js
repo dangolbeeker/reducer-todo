@@ -1,58 +1,52 @@
-export const ADD_ITEM = "ADD_ITEM";
-export const TOGGLE_ITEM = "TOGGLE_ITEM";
-export const CLEAR_COMPLETED = "CLEAR_COMPLETED";
-
-export const initialState = {
-  todo: [
-    {
-      name: "Cook Dinner",
-      id: 424,
-      completed: false
-    },
-    {
-      name: "Play Xbox One",
-      id: 5335,
-      completed: false
-    },
-    {
-      name: "Get ready for bed",
-      id: 1948,
-      completed: false
-    }
-  ]
-};
+export const initialState = [
+  {
+    item: "code",
+    completed: false,
+    id: 3892987589
+  },
+  {
+    item: "practice JavaScript",
+    completed: false,
+    id: 65423165
+  },
+  {
+    item: "Play Xbox One",
+    completed: false,
+    id: 165146535
+  },
+  {
+    item: "Get ready for bed",
+    completed: false,
+    id: 9874561684
+  }
+];
 
 export const reducer = (state, action) => {
+  console.log(state, action);
   switch (action.type) {
-    case ADD_ITEM:
-      console.log(action.payload.item);
+    case "ADD_TODO":
       const newItem = {
-        name: action.payload.item,
-        id: Date.now(),
-        completed: false
+        item: action.payload,
+        completed: false,
+        id: Date.now()
       };
-      return {
+      return [
         ...state,
-        todo: [...state.todo, newItem]
-      };
-    case TOGGLE_ITEM:
-      return {
-        ...state,
-        todo: state.todo.map(item => {
-          if (action.payload === item.id) {
-            return {
-              ...item,
-              completed: !item.completed
-            };
-          }
-          return item;
-        })
-      };
-    case CLEAR_COMPLETED:
-      return {
-        ...state,
-        todo: state.todo.filter(item => !item.completed)
-      };
+        newItem
+        // items: [...state.items, newItem]
+      ];
+    case "TOGGLE_COMPLETED":
+      return state.map(item => {
+        return item.id === action.payload
+          ? { ...item, completed: !item.completed }
+          : item;
+        // if (item.id === action.payload) {
+        //   item.completed = !item.completed;
+        // }
+      });
+    case "CLEAR_COMPLETED":
+      return state.filter(item => !item.completed);
+
     default:
       return state;
   }
